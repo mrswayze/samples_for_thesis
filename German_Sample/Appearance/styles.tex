@@ -1,0 +1,488 @@
+% ~~~~ PAKETE ~~~~ %
+
+\usepackage[automark]{scrlayer-scrpage} %brauchen wir für die Optik
+\usepackage{euler}	% Benutzen die AMS euler Schriftart für den Mathemodus
+\usepackage{fontspec} %zeigt an, dass XeLateX verwendet wird
+\usepackage[T1]{fontenc}
+\usepackage[onehalfspacing]{setspace} %Setzt Zeilenabstand auf 1.5fache des üblichen
+\usepackage[ngerman]{babel} %deutsche Sprache woop woop
+
+% Mathematische Symbole
+
+\usepackage{amssymb, amsmath, amsbsy} 
+\usepackage{bm, bbm}
+\usepackage[ntheorem]{mathtools}
+\usepackage{complexity} % Befehle für Komplexität: \NP, ...
+\usepackage{marvosym}   
+%\usepackage[scr]{rsfso} % \mathscr{} sieht dann hübscher aus
+%\usepackage[retainorgcmds]{IEEEtrantools} % Bietet sich an, wenn man viel mit Gleichungen arbeitet
+
+
+% Bildunterschriften 
+
+\usepackage[textfont={sl},font={small},%
+  labelsep=space, textformat=period]{caption}
+\usepackage{subcaption}
+
+
+% Hyperlinks im Dokument
+
+\usepackage[]{hyperref}
+ \hypersetup{colorlinks=true, citecolor=mLightBrown,%
+                 filecolor=black,%
+                 linkcolor=mDarkTeal,%
+                 urlcolor=black}
+
+               
+
+% Umgebungen für Sätze             
+\usepackage[amsmath, thref, thmmarks, hyperref]{ntheorem} %mathematische Sprachen einbinden
+
+
+% Einbinden von Grafiken
+\usepackage{graphicx} %Graphiken
+
+
+% Automatisch Deutsches Datum
+\usepackage[ngerman]{datetime}
+\newdateformat{myformat}{\THEDAY{ter }\monthnamengerman[\THEMONTH], \THEYEAR}
+
+% Falls Symbolverzeichnis geünwscht:
+
+\usepackage[symbols, automake, stylemods={topic}, postpunc={comma}]{glossaries-extra}
+%sort=none, nogroupskip,
+\usepackage{glossary-mcols}
+\usepackage[bb=boondox]{mathalpha}
+
+
+
+% ~~~~~~ ZUSATZEINSTELLUNGEN ~~~~~
+
+% Schriftart: CMU Serif
+\setmainfont{CMU Serif}
+
+
+%Figure Captions
+\renewcommand{\figurename}{\textsc{Fig.}}
+
+
+% Gleichungen nach Kapiteln nummerieren
+\numberwithin{equation}{chapter}
+
+% ~~~~~ THEOREME usw. ~~~
+
+% Style für Sätze
+\makeatletter
+\newtheoremstyle{restated}
+  {\item[\hskip\labelsep \theorem@headerfont ##1\ ##2\theorem@separator]}%
+  {\item[\hskip\labelsep {\theorem@headerfont ##1\ ##2}{\normalfont\ (##3)}{\theorem@headerfont
+  \theorem@separator}]}
+\makeatother
+
+\makeatletter
+\newtheoremstyle{nonumberrestated}%
+  {\item[\theorem@headerfont \hskip\labelsep ##1\theorem@separator]}%
+  {\item[\hskip\labelsep \theorem@headerfont ##3\theorem@separator]}%
+\makeatother
+  
+
+% Sätze
+\theoremstyle{restated}
+\theoremnumbering{arabic}
+\theoremheaderfont{\normalfont\bfseries}
+\theorembodyfont{\slshape}
+\theoremseparator{.}
+\theorempreskip{2ex}
+\theorempostskip{\topsep}
+\theoremindent0cm
+\theoremnumbering{arabic}
+\theoremsymbol{\ensuremath{_\diamond}} % kleine Raute am Ende jedes Theorems, wenn nicht gewünscht, einfach weg damit
+
+
+\newtheorem{theorem}{Theorem}[chapter] % Sätze werden nach Kapiteln nummeriert
+\newtheorem{theoremstar}{Theorem} 	   % Metaresultate, die unabhängig vom Kapitel nummeriert werden sollen
+
+
+% Sonstige Umgebungen
+
+\theoremstyle{restated} 
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{observation}[theorem]{Observation}
+\newtheorem{question}[theorem]{Question}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{claim}{Claim}[theorem]
+
+
+%Falls Theoreme in der Arbeit mehrfach verwendet werden
+
+\makeatletter
+
+\def\ifempty#1{%
+ \def\@tmp@a{#1}%
+ \ifx\@tmp@a\@empty%
+}
+
+\theoremstyle{restated}
+\newtheorem*{restatedtheorem*}{}
+
+\newenvironment{restatement}[2][]{%
+ \ifempty{#1}
+  \begin{restatedtheorem*}[\autoref*{#2}]%
+ \else%
+  \begin{restatedtheorem*}[\autoref*{#2}{\normalfont\ (#1)}]%
+ \fi%
+}%
+{\end{restatedtheorem*}}
+\makeatother
+
+
+
+% Umgebung für Beweise
+
+\makeatletter
+\newtheoremstyle{proof}%
+{\item[\hskip\labelsep \theorem@headerfont ##1\theorem@separator]}%
+{\item[\hskip\labelsep \theorem@headerfont ##1\ ##3\theorem@separator]}
+\makeatother
+
+\theoremstyle{proof}
+\theoremheaderfont{\normalsize\normalfont\itshape}
+\theorempreskip{.5ex}
+\theorempostskip{\topsep}
+\theoremseparator{.}
+
+\theoremsymbol{\ensuremath{_\blacksquare}} %schwarzes Kästchen als Beweissymbol
+
+\theorembodyfont{\upshape}
+\newtheorem{proof}{Proof}
+
+\theorempreskip{0ex}
+
+\theoremsymbol{\ensuremath{_\square}}% weißes Kästchen als Beweissymbol (z.b. für Claims innerhalb von Beweisen)
+\newtheorem{proof2}{Proof} % \begin{proof2}... gibt dann Beweis mit weißem Kästchen
+
+
+%Umgebungen "Proof of" und "Alternate proof of" falls Beweise erst zu einem späteren Zeitpunkt geführt werden
+
+\theorembodyfont{\upshape}
+\theoremseparator{.}
+\theorempreskip{3.5ex}
+\theorempostskip{\topsep}
+\theoremsymbol{\ensuremath{_\blacksquare}}
+\theoremheaderfont{\large\normalfont\itshape}
+\newtheorem{proofof}{Proof of}
+\newtheorem{proofalternate}{Alternate proof of}
+
+
+%~~~~ HILFSBEFEHLE ~~~
+
+% In Latex lassen sich einfach neue Befehle definieren:
+% Syntax: \newcommand{\neuername}[Anzahl Eingabeparameter] {Das hier wird ausgeführt, #1 greift auf Parameter 1 zu usw}
+
+\newcommand{\set}[2]{\{#1 \;|\; #2 \}} 
+\newcommand{\case}[2]{\indent {\bfseries Case #1\/:} {\itshape #2.}}
+
+%
+%%DP-Aussehen
+%\renewcommand{\DP}{\textsf{\upshape{DP}}}
+
+
+%Pfeile für gerichtete Graphen
+\newcommand{\bd}[1]{\overset{\text{\tiny$\bm\leftrightarrow$}}{#1}}
+\newcommand{\overr}[1]{\overset{\text{\tiny$\bm\rightarrow$}}{#1}}
+\newcommand{\overl}[1]{\overset{\text{\tiny$\bm\leftarrow$}}{#1}}
+
+
+%Kanten in Kritischen Di-Graphen
+\newcommand{\dext}{\overr{\text{\upshape ext}}}
+\newcommand{\Dext}{\overr{\text{\upshape Ext}}}
+\newcommand{\ext}{\text{\upshape{ext}}}
+\newcommand{\Ext}{\text{\upshape{Ext}}}
+
+
+% ~~~~ TIKZ ~~~~
+
+% Für Abschlussarbeiten in der Graphentheorie bietet es sich an, Bilder mit TIKZ zu zeichnen
+% TIKZ DOKU: https://texdoc.org/serve/tikz/0
+
+\usepackage{tikz}
+
+%Für TIKZ gibt es diverse nützliche Libraries:
+
+\usetikzlibrary[graphs, arrows, backgrounds, intersections, positioning, fit, petri, calc, shapes, decorations.pathmorphing, shapes.geometric, mindmap, patterns, arrows.meta]  
+
+% Default-Werte:
+
+\tikzset{node distance=1cm, bend angle=20,
+vertex/.style={circle,minimum size=2mm,very thick, draw=black, fill=black, inner sep=0mm},
+fvertex/.style={circle,minimum size=5mm,  draw=black, inner sep=0mm},
+help lines/.style={-,color=black, >=stealth', shorten <=.5pt, shorten >=.5pt}}
+
+
+%Farben für TIKZPICTURES
+\definecolor{mDarkBrown}{HTML}{604c38}
+\definecolor{mDarkTeal}{HTML}{0E668B}
+\definecolor{mLightBrown}{HTML}{EB811B}
+\definecolor{mLightGreen}{HTML}{14B03D}
+\definecolor{mLightBlue}{HTML}{88CCEE}
+\definecolor{TUgreen}{RGB}{0,102,102}
+
+
+\definecolor{TolDarkPurple}{HTML}{332288}
+\definecolor{TolLightBlue}{HTML}{88CCEE}
+\definecolor{TolLightGreen}{HTML}{44AA99}
+\definecolor{TolDarkGreen}{HTML}{117733}
+\definecolor{TolDarkBrown}{HTML}{999933}
+\definecolor{TolLightBrown}{HTML}{DDCC77}
+\definecolor{TolDarkRed}{HTML}{661100}
+\definecolor{TolLightRed}{HTML}{CC6677}
+\definecolor{TolLightPink}{HTML}{AA4466}
+\definecolor{TolDarkPink}{HTML}{882255}
+\definecolor{TolLightPurple}{HTML}{AA4499}
+
+
+
+% ~~~~~~~~ BIBLATEX: Einfaches Einbinden von Literatur ~~~~~~~~~~
+% WICHITG: Als Befehl zum Bib(la)tex-Kompilieren muss biber % angegeben werden 
+% BIBLATEX DOKU: http://mirrors.ibiblio.org/CTAN/info/translations/biblatex/de/biblatex-de-Benutzerhandbuch.pdf
+
+\usepackage[
+backend=biber, 	% Benutzt zum Übersetzen biber anstatt bibtex
+sorting=nyvt, 	% Sortieren der Einträge: name > year > volume > title 
+%				% Für andere Möglichkeiten siehe https://tex.stackexchange.com/questions/51434/biblatex-citation-order  
+hyperref=true,	% Erzeugt Hyperlinks ins Literaturverzeichnis
+style=numeric,	% Einträge haben die Form [1], [2], etc
+url=true,		% Falls "url" option im bib-file genutzt wird, fügt dies automatisch Hyperlink ein
+block=none,		% Keine Extra-Abstände zwischen den Einträgen
+eprint=true,	% Elektronische Kennzeichnung einer Online Publikation
+natbib=true,	% Dadurch kann das Zusatzpaket natbib genutzt werden
+maxnames=100,	% damit im Literaturverzeichnis keine Autoren abgeschnitten werden
+backref = true]	% Gibt im Literaturverzeichnis an, auf welcher Seite der jeweilige Eintrag zitiert wird
+{biblatex}
+
+\renewcommand*{\mkbibnamefamily}[1]{\textsc{#1}} 	% Autoren in Kapitälchen
+\renewcommand*{\labelnamepunct}{:\addspace}			% Doppelpunkt nach den Autoren
+\renewbibmacro{in:}{}								% Sonst steht in: vor jedem Journal, das braucht ja wohl niemand
+\DeclareNameAlias{default}{family-given}				% Erst Nachname, dann Vorname
+\DeclareFieldFormat[article]{volume}{\textbf{#1}}	% Volume in fett bei @article
+\DeclareFieldFormat{pages}{#1}						% Seitenzahlen ohne alles
+\DeclareFieldFormat[article]{title}{{#1}}			% Titel ohne alles bei @article
+\DeclareFieldFormat[unpublished]{title}{{#1}}		% Gleiches für @unpublished
+\DeclareFieldFormat[thesis]{title}{{#1}}			% und für @thesis
+\DeclareFieldFormat[online]{title}{{#1}}			% ...
+\DeclareFieldFormat[book]{title}{{#1}}				% ... ⊙﹏⊙
+\DeclareFieldFormat[inproceedings]{title}{{#1}}		% geschafft
+\DeclareFieldFormat[inproceedings]{booktitle}{\upshape{#1}} 
+\DeclareFieldFormat[incollection]{title}{{#1}}
+\DeclareFieldFormat[incollection]{booktitle}{In: \emph{#1}}
+\finalandcomma 	% Komma vor dem 'and' bei mehreren Autoren
+
+
+
+% ~~~~~~ VORWORT (optional) ~~~~~~~~~~~
+       
+%% Falls eine nicht-nummerierte Einleitung gewünscht ist, kann diese durch \foreword[Lauftitel]{richtiger Titel} erzeugt werden
+\DeclareNewSectionCommand[%
+  style=chapter,
+  beforeskip= -3\baselineskip minus \parskip,
+  afterskip= 1.5\baselineskip plus .1\baselineskip minus .167\baselineskip,
+  innerskip=0.5\baselineskip,
+  level=0,
+  pagestyle=plain,
+  tocindent=0pt,
+  tocstyle=chapter,
+  tocnumwidth=0pt,
+]{foreword}
+\makeatletter
+
+
+\renewcommand{\forewordformat}{\centering \bfseries 
+ \Huge Einleitung\\
+    \noindent\rule{\linewidth}{0.2pt}\par 
+ }
+ 
+\renewcommand*{\forewordmarkformat}{Einleitung:}
+
+\newcommand*{\theforeword}{}
+
+
+
+
+%~~~~~~ KOMA-Script ~~~~~~~~%
+% KOMA-Script ist eine ziemlich komplexe Sammlung von Klassen und Paketen zum typesetting
+% Die KOMA-Doku findet sich hier: https://komascript.de/~mkohm/scrguide.pdf
+% An den nächsten Zeilen am Besten nicht herumpfuschen
+
+
+\KOMAoptions{headsepline=true, headings=twolinechapter, headinclude=true, footinclude=false, bibliography=totoc, titlepage=true, cleardoublepage=plain}
+\pagestyle{scrheadings}
+\clearpairofpagestyles 
+\ihead[]{}
+\ohead{\pagemark}
+\chead{\headmark}
+\cfoot[]{}
+\renewcommand{\chapterformat}{\centering \bfseries 
+ \Huge \chapapp \mbox{} \thechapter \\
+    \noindent\rule{\linewidth}{0.2pt}\par 
+ }
+\renewcommand{\chaptermarkformat}{\thechapter \mbox{ }}
+\newcommand*{\ORIGchapterheadendvskip}{}% 
+\let\ORIGchapterheadendvskip=\chapterheadendvskip 
+\renewcommand*{\chapterheadendvskip}{% 
+  {% 
+    \setlength{\parskip}{0pt}% 
+    \vspace{0.5 cm}
+    \noindent\rule{\linewidth}{0.2pt}\par 
+  }% 
+  \ORIGchapterheadendvskip 
+} 
+\renewcommand{\raggedchapter}{\raggedpart }
+\renewcommand*{\chaptermarkformat}{} 
+
+
+
+\renewcommand{\partformat}{\centering \bfseries 
+ \Huge Teil~\thepart \\
+ \vspace{1.5cm}
+    \noindent\rule{\linewidth}{0.4pt}\par 
+ }
+\renewcommand{\partmarkformat}{\thepart \mbox{ }}
+\newcommand*{\ORIGpartheadendvskip}{}% 
+\let\ORIGpartheadendvskip=\partheadendvskip 
+\renewcommand*{\partheadendvskip}{% 
+  {% 
+    \setlength{\parskip}{0pt}% 
+    \vspace{0.5 cm}
+    \noindent\rule{\linewidth}{0.4pt}\par 
+  }% 
+  \ORIGpartheadendvskip 
+} 
+
+%\setkomafont{chapterprefix}{%\normalfont 
+%}
+\addtokomafont{disposition}{%\normalfont 
+\bfseries}
+
+\addtokomafont{part}{\Huge \scshape %\normalfont
+\mdseries
+}
+
+\addtokomafont{chapter}{\huge \scshape %\normalfont
+\mdseries
+}
+\addtokomafont{section}{\large}
+\addtokomafont{minisec}{%\large
+\centering}
+
+ 
+
+
+
+
+% ~~~~~ BEI SEHR VIEL LANGEWEILE ~~~~~
+%\Komaoptions{Option=Wert} oder \Komaoption{Option}{Wert}
+
+%Alle möglichen Komaoptionen können hier eingegeben werden
+%mögliche Optionen: 
+%--------------
+%Satzspiegel:
+%BCOR=Korrektur ~> absoluter Wert der Bindekorrektur; kann auch bei \documentclass direkt eingegeben werden
+%DIV=Faktor ~> Je höher, umso kleiner werden die Ränder
+%DIV=calc ~> typearea berechnet in Abhängigkeit von gewählter Schriftart einen guten Satzspiegel
+%DIV=last ~> Satzspiegelberechnung mit denselben DIV-Argumenten erneut durchführen, 
+%			 alternativ: \recalctypearea
+%headinclude=on/off, footinclude=on/off ~> Zählen Kopf-/Fußzeile zum Textkörper?
+%headlines=Zeilenanzahl ~> Anzahl der Kopfzeilen im Allgemeinen, voreingestellt:1,25; 
+%footlines=Zeilenanzahl ~> analog
+%danach: unbedingt Satzspiegel neu berechnen!
+%--------------
+%Dokumenttitel:
+%titlepage=on/off
+%abstract=on/off ~> Überschrift über Zusammenfassung ein/ausgeschaltet
+%--------------
+%Inhaltsverzeichnis:
+%toc=Einstellung
+%--------------
+%Absatzauszeichnung:
+%parskip=Methode, wobei Methode=full/half */+/-, full ~> Absatzabstand halbe/ganze Zeile, Symbol:Abstand %am Zeilenende
+%wahrscheilich besser: Absatzeinzug, ist voreingestellt
+%--------------
+%Kopf-/Fußzeile:
+%headsepline=true/false, footsepline=true/false ~> Linie zischen Kopf-/Fußzeile und Text
+%ist die Option true, so zählt Kopf-/Fußzeile automatisch zum Textkörper ~> \recalctypearea verwenden
+%cleardoublepage=Seitenstil ~> Stil von Vakatseiten
+%footnotes=multiple ~> aufeinanderfolgende Fußnoten werden mit Kommata getrennt
+%--------------
+%Gliederung:
+%open=right ~> neue Kapitel beginnen auf der rechten Seite
+%chapterprefix=true/false ~> Kapitel 1...
+%appendixprefix=true/false ~> ANHANG
+%headings=small/normal/big ~> Überschriftengröße
+%headings=optiontohead/optiontotoc~> [] bei Kapitel kommt automatisch als Kolumnentitel/in den TOC
+%numbers=endperiod/noendperiod ~> Punkt/keinPunkt nach Elementen im TOC
+%---------------------------------------------------------------------------------------------------%
+
+%Titelseite:
+%\titlepagestyle{Wert}
+%\titlehead{Kopf} ~> Kopf der Titelseite, Gestaltung über \setkomafont{titlehead}{...}
+%\subject{Typisierung} ~> wird unmittelbar über dem Titel ausgegeben
+%\title{Titel}
+%\subtitle{Subtitel}
+%\author{Autor}
+%\date{Datum}
+%\publishers{Verlag} ~> hier der Betreuer?
+%\and ~> falls mehrere Autoren
+%\dedication{Widmung} ~> kommt auf neue Seite
+%\maketitle ~> Titelseite erzeugen
+%\begin{abstract}....\end{abstract} ~> Erzeugt Umgebung für Zusammenfassung der Arbeit
+%
+%Inhaltsverzeichnis:
+%Schrift der oberen Einträge: \setkomafont{chapterentry}{...}
+%Schrift der Seitenzahlen: chapterentrypagenumber
+%Schrift der punktierten Verbindungslinien: chapterentrydots
+%
+%Textauszeichungen:
+%\textsuperscript{Text}, \textsubscript{Text} ~> Text hoch-/tiefstellen
+%\minisec{Text} ~> Miniüberschrift
+%
+%Seitenstil:
+%\pagestyle{Seitenstil} 
+%\thispagestyle{lokaler Seitenstil} 
+%\chapterpagestyle{Seitenstil bei Kapitelanfängen}
+%\indexpagestyle. Es existieren folgende Möglichkeiten:
+%~> empty: Kopf- und Fußzeile komplett leer
+%~> headings: Überschriften werden automatisch in Seitenkopf übernommen
+%~> myheadings: wie headings, aber mehr Freiheiten ~>\markboth{linkeMarke}{rechteMarke}
+%~> plain: nur Seitenzahl wird ausgegeben
+%
+%Kopf-/Fußzeile:
+%\footnote[Nummer]{Text}
+%\footref{Referenz} ~> setzt man nach einer Fußnote ein label, so kann man sich durch footref darauf %beziehen
+%\deffootnote[Markenbreite]{Einzug}{Absatzeinzug}{Markendefinition} ~> Absatzeinzug für Absätze in FN
+%\deffootnotemark{...} ~> für Fußnotenmarkierung im Text
+%\setfootnoterule[Höhe]{Länge}~> genaue Werte für Linie über Fußnoten festlegen
+%\setkomafont{footnoterule}{....} ~> zum Beispiel Farbe verändern
+% 
+%\pagenumbering{}: arabic, roman, alph; Seitenzahl wird beim Aufruf immer zurückgesetzt
+%\setkomafont{Element}{Befehle} ~> Schriftarten des jew. Elements verändern
+%\addtokomafont{Element}{Befehle}
+%\usekomafont{Element}{Befehle} 
+%
+%\clearpage, \cleardoublepage: alle noch nicht ausgegebenen Gleitumgebungen ausgeben, neue Seite beginnen
+%\cleardoubleoddstandardpage: vor neuem Kapitel verwenden
+%
+%
+%Umgebungen:
+%\begin{itemize}....\end{itemize} ~> Liste
+%\begin{enumerate}...\end{enumerate} ~> nummerierte Liste
+%\begin{description}...\end{description} ~> Stichworliste; Beschreibung einzelner Begriffe
+%
+%\begin{labeling}[Trennzeichen]{Längstes Muster}
+%\item[Muster]
+%\end{labeling} ~> Abstand zwischen Begriff und Erklärung festsetzbar; setkomafont{labelinglabel}{..}
+%
+%\begin{quote}...\end{quote} ~> Anekdote, Absätze werden durch Abstände gekennzeichnet
+%\begin{quotation}...\end{quotation} ~> Absätze werden eingerückt

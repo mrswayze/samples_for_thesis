@@ -1,0 +1,37 @@
+%Symbolverzeichnis mit Baumstruktur: Überschriften erzeugt man so:
+
+\newglossaryentry{basic}{
+  type=symbols,
+  name={Basic Terminology},
+  description={}, sort={1}
+  }
+
+
+%Die zu einer Überschrift gehörigen Einträge so: Wichtig: als parent den Namen der Überschrift angeben (hier: basic)
+
+%\newglossaryentry{abkürzung}{name ={Darstellung im Symbolverzeichnis}, text={Darstellung im Fließtext}, description={Beschreibung im Symbolverzeichnis}, type=symbols, parent={Überschrift}, sort={Alphabetisch! A1, dann A2, dann usw., so kann man immer noch etwas hinzufügen}
+
+
+
+\newglossaryentry{Nat}{name={$\mathbbb{N}$}, text={\ensuremath{\mathbb{N}}}, description={set of positive integers},type=symbols, parent=basic,  sort={A1}} 
+\newglossaryentry{Nato}{name={$\mathbbb{N}_{\boldsymbol 0}$}, text={\ensuremath{\mathbb{N}_0}}, description={set of non-negative integers},type=symbols, parent=basic, sort={A2}}
+\newglossaryentry{kell}{name={$\bm{[k,\ell]}$}, text={\ensuremath{[k,\ell]}}, description={all $h \in \mathbb{N}_0$ with $k \leq h \leq \ell$},type=symbols, parent=basic, sort={A3}}
+
+\newglossaryentry{ems}{name={$\bm \varnothing$}, text={\ensuremath{\varnothing}}, description={empty set},type=symbols, parent=basic, sort={B1}}
+
+\newglossaryentry{2^V}{name={$\bm{2^V}$}, text={\ensuremath{2^V}}, description={power set of $V$},type=symbols, parent=basic, sort={B2}}
+\newglossaryentry{|V|}{name={$\bm{|V|}$}, text={\ensuremath{|V|}}, description={cardinality of the set $V$},type=symbols, parent=basic, sort={B3}}
+
+
+
+%Neue Überschrift:
+
+\newglossaryentry{di}{
+  type=symbols,
+  name={More Fancy Terminology},
+  description={}, sort={3}}
+
+\newglossaryentry{D}{name={$\bm{D,D',\tilde{D}$}}, text={\ensuremath{D}}, description={digraphs},type=symbols, parent=di, sort={J11}}
+
+\newglossaryentry{V(D)}{name={$\bm{V(D)}$}, text={\ensuremath{V(D)}}, description={vertex set of a digraph $D$},type=symbols, parent=di, sort={J12}}
+\newglossaryentry{A(D)}{name={$\bm{A(D)}$}, text={\ensuremath{A(D)}}, description={arc set of a digraph $D$},type=symbols, parent=di, sort={J13}}

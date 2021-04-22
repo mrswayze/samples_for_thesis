@@ -1,0 +1,87 @@
+
+% ~~~ Anleitung zum Kompilieren: ~~~
+% Empfohlen: Benutzt den online-Editor overleaf (de.overleaf.com), als Student bekommt man da kostenlos die Premiumversion. Overleaf ist deutlich schneller als der Durchschnittslaptop, das einzige, was ihr braucht, ist eine stabile Internetverbindung.
+% Falls ihr Overleaf benutzen wollt: stellt im Menü den Compiler auf XeLaTeX um, dann sollte es problemlos kompilieren
+
+% Falls ihr lieber euren eigenen Editor benutzt: Wählt als Tex-Distribution möglichst TexLive (https://www.tug.org/texlive/). 
+% Achtet in euren Einstellungen darauf, dass Biblatex zum Übersetzen biber verwendet. Falls ihr TexMaker verwendet, könnt ihr das Einstellen in Optionen -> Texmaker konfigurieren -> Befehle, da einfach bei Bib(la)tex biber % eintragen. In anderen Editoren sollte es ähnlich funktionieren.
+% Um das Dokument dann wirklich zu kompilieren müsst ihr folgendermaßen vorgehen:
+% XeLatex -> Biblatex -> XeLatex -> XeLatex -> PDF anzeigen.
+% Wenn ihr gerade keine neuen Referenzen einfügt, reicht auch XeLatex -> XeLatex -> PDF anzeigen
+
+
+
+\documentclass[DIV=11, pagesize, oneside, 11pt ]{scrbook} %11pt, a4paper ist Voreinstellung
+%  twoside,
+%pagesize ist wichtig für díe korrekte Umwandlung ins PDF-Format
+%option "draft": Entwurfsmodus aktiviert (Graphiken werden nicht übersetzt sondern als Kästen angezeigt)
+%scrbook: verwendet KOMA-Script (siehe styles)
+%--------------------------------------------------------------------------------------------------%
+
+\input{./Appearance/styles}
+
+
+\input{glossary}
+\bibliography{./Literatur/Literatur}
+
+\recalctypearea
+
+\makeglossaries
+
+
+
+\begin{document}
+\frontmatter
+\clearpage
+\pagenumbering{roman}
+
+\input{./Appearance/titlepage}
+
+
+\input{Zusammenfassung}
+\input{Abstract}
+
+\chapter*{Eigenständigkeitserklärung}
+Hiermit versichere ich, dass ich diese Bachelorarbeit selbstständig verfasst und nur die angegebenen Quellen und Hilfsmittel verwendet habe. Die Arbeit wurde bisher keiner Prüfungsbehörde vorgelegt.
+\\[20.ex]
+
+\noindent Ilmenau,  \today \hspace{0.675\linewidth} 
+
+
+\cleardoublepage
+\hypersetup{linkcolor=black}
+\tableofcontents
+\hypersetup{linkcolor=mDarkTeal}
+
+
+
+\mainmatter
+\pagenumbering{arabic}
+\input{Einleitung}
+
+\part{Meine Arbeit ist so fundamental, dass sie sogar aus zwei Teilen besteht!} % if not, just uncomment the parts
+\automark[section]{chapter} % die Sektionen erhalten als Kopfzeile die Kapitelüberschriften
+\input{./Chapter1/Chapter1}
+\part{Wie versprochen: Ein superber zweiter Teil!}
+\input{./Chapter2/Chapter2}
+
+
+
+\backmatter
+\printbibliography[title=Literaturverzeichnis]
+
+\setchapterpreamble[u,c][0.9\textwidth]{
+\vspace{-1cm}
+Die Zahl am Ende jeder Zeile verweist auf die Seite, auf der das Symbol definiert wurde. The Symbole sind weitestgehend möglich nach inhaltlichen Überschneidungen sortiert.
+\vspace{0.5cm}
+}
+
+
+\printglossary[type=symbols,style=topicmcols, title={Symbolverzeichnis}]
+
+
+
+ 
+\end{document}
+
+

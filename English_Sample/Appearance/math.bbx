@@ -1,0 +1,176 @@
+\ProvidesFile{math-standard.bbx}[2016/02/10 biblatex bibliography style for mathematicians]
+\newtoggle{bbx:sentencetitle}
+
+\RequireBibliographyStyle{alphabetic}
+\RequireBibliographyStyle{standard}
+\ExecuteBibliographyOptions{abbreviate=false}
+\DeclareBibliographyOption[boolean]{dashed}[true]{%
+  \ifstrequal{#1}{true}
+    {\ExecuteBibliographyOptions{pagetracker}%
+     \renewbibmacro*{bbx:savehash}{\savefield{fullhash}{\bbx@lasthash}}}
+    {\renewbibmacro*{bbx:savehash}{}}}
+\DeclareBibliographyOption[boolean]{sentencedtitle}[false]{%
+  \settoggle{bbx:sentencetitle}{#1}}
+\ExecuteBibliographyOptions{sentencedtitle,dashed,labelnumber}
+\iftoggle{bbx:sentencetitle}{%
+  \DeclareFieldFormat{titlecase}{\MakeSentenceCase*{#1}}
+}{}
+
+\renewrobustcmd*{\bibinitdelim}{\nobreak\hspace{.15em}}
+
+\newbibmacro*{bbx:savehash}{%
+  \savefield{fullhash}{\bbx@lasthash}}
+
+\renewcommand*{\bibfont}{\footnotesize}
+\renewcommand*{\subtitlepunct}{\textup{\addcolon}\space}
+\renewcommand*{\newunitpunct}{\addcomma\space}
+\renewcommand*{\ppspace}{\addspace}
+\renewcommand*{\mkbibquote}[1]{\mkbibemph{#1}}
+\renewcommand*{\labelnamepunct}{\addcomma\space}
+\renewbibmacro*{in:}{}
+\renewbibmacro*{author}{%
+  \ifboolexpr{
+    test \ifuseauthor
+    and
+    not test {\ifnameundef{author}}
+  }
+  {\usebibmacro{bbx:dashcheck}
+    {\bibnamedash}
+    {\printnames{author}%
+      \setunit{\addcomma\space}%
+      \usebibmacro{bbx:savehash}}%
+    \usebibmacro{authorstrg}}
+  {\global\undef\bbx@lasthash}}
+
+\DeclareFieldFormat{journaltitle}{\mkbibemph{#1}}
+\DeclareFieldFormat{booktitle}{\mkbibemph{#1}}
+\DeclareFieldFormat[article]{number}{\mkbibbold{#1}}
+\DeclareFieldFormat[book]{number}{\mkbibbold{#1}}
+\renewcommand{\mkbibcompletename}[1]{\textsc{#1}}
+\DeclareFieldFormat
+  [article,inbook,incollection,inproceedings,patent,thesis,unpublished]
+  {title}{\textup{#1\isdot}}
+  
+\renewbibmacro*{journal+issuetitle}{%
+ \iffieldundef{year}{}{%
+  \usebibmacro{journal}%
+  \setunit*{\addspace}%
+  \iffieldundef{series}
+    {}
+    {\newunit
+     \printfield{series}%
+     \setunit{\addspace}}%
+  \usebibmacro{volume+number+eid}%
+  \setunit{\addspace}%
+  \usebibmacro{issue+date}%
+  \setunit{\addcolon\space}%
+  \usebibmacro{issue}%
+  \newunit}}
+
+\newbibmacro*{bbx:dashcheck}[2]{%
+  \ifboolexpr{
+    test {\iffieldequals{fullhash}{\bbx@lasthash}}
+    and
+    not test \iffirstonpage
+  }
+  {#1}
+  {#2}}
+\renewcommand*{\bibnamedash}{\rule{3em}{0.4pt}\hspace*{.16667em}\addcomma\addspace}
+
+% arXiv smallcaps
+\DeclareFieldFormat{eprint:arxiv}{%
+  \textsc{arXiv}\addcolon\space
+  \ifhyperref
+    {\href{https://arxiv.org/\abx@arxivpath/#1}{%
+       \nolinkurl{#1}%
+       \iffieldundef{eprintclass}
+         {}
+         {\addspace\texttt{\mkbibbrackets{\thefield{eprintclass}}}}}}
+    {\nolinkurl{#1}%
+     \iffieldundef{eprintclass}
+       {}
+       {\addspace\texttt{\mkbibbrackets{\thefield{eprintclass}}}}}}
+       
+       
+% personalcommunication
+\DeclareBibliographyDriver{personalcommunication}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author/editor+others/translator+others}%
+  \setunit{\printdelim{nametitledelim}}\newblock
+  \usebibmacro{title}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \usebibmacro{byeditor+others}%
+  \newunit\newblock
+  \printfield{howpublished}%
+  \newunit\newblock
+  \printfield{type}%
+  \newunit
+  \printfield{version}%
+  \newunit
+  , \textit{personal communication\nopunct\printfield{note}}%
+  \newunit\newblock
+  \usebibmacro{organization+location+date}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \newunit\newblock
+  \iftoggle{bbx:related}
+    {\usebibmacro{related:init}%
+     \usebibmacro{related}}
+    {}%
+  \usebibmacro{finentry}}
+
+
+% full citation publication
+\DeclareBibliographyDriver{pubdriver}{%
+\hspace{-.3em}{\small published in:}
+\textsc{\usebibmacro{author/editor+others/translator+others}}%
+\newunit\newblock
+\usebibmacro{title}%
+\newunit
+\usebibmacro{journal+issuetitle}%
+\newunit
+\usebibmacro{note+pages}%
+\adddot\newunit\newblock\newline
+Available at \nopunct%
+\usebibmacro{doi+eprint+url}%
+\adddot%
+\usebibmacro{finentry}}
+
+% full citation submission
+\DeclareBibliographyDriver{submitdriver}{%
+\hspace{-.3em}{\small submitted\iffieldundef{journaltitle}{.}{ to:}}
+\usebibmacro{journal}%
+\adddot\newunit\newblock\newline
+\textsc{\nopunct\usebibmacro{author/editor+others/translator+others}}%
+\newunit\newblock
+\usebibmacro{title}%
+\adddot\newunit\newblock\newline
+\iffieldundef{eprint}{}
+{Available at \nopunct%
+\usebibmacro{doi+eprint+url}%
+\adddot}%
+\usebibmacro{finentry}}
+
+% inline own citation
+\DeclareBibliographyDriver{owndriver}{%
+\usebibmacro{author/editor+others/translator+others}%
+\addcolon
+\usebibmacro{title}%
+\newunit
+\iffieldundef{year}{}{\usebibmacro{journal+issuetitle}}
+\nopunct\mkbibbrackets{\hspace{-.3em}\unspace\usebibmacro{cite}}%
+}
+\endinput
+
+
+
+
